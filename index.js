@@ -1,4 +1,3 @@
-index.js
 const {
   default: makeWASocket,
   useMultiFileAuthState,
@@ -42,4 +41,4 @@ async function startBot() {
   });
 }
 
-startBot(
+startBot();
