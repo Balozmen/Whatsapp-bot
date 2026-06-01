@@ -12,7 +12,6 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT);
 
 async function startBot() {
@@ -23,6 +22,18 @@ async function startBot() {
   });
 
   sock.ev.on("creds.update", saveCreds);
+
+  if (!sock.authState.creds.registered) {
+    const phoneNumber = "212711888511";
+    const code = await sock.requestPairingCode(phoneNumber);
+    console.log("PAIRING CODE:", code);
+  }
+
+  sock.ev.on("connection.update", ({ connection }) => {
+    if (connection === "open") {
+      console.log("✅ WhatsApp Connected");
+    }
+  });
 
   sock.ev.on("messages.upsert", async ({ messages }) => {
     const msg = messages[0];
